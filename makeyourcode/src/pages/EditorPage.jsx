@@ -1,8 +1,23 @@
-import React, {useState} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import Client from '../components/Clinet';
 import Editor from '../components/editor';
+import LogoProject from '../components/LogoProject.png'
+import ACTIONS from "../Actions";
+import { useLocation } from "react-router-dom";
+import { initSocket } from "../socket";
 
 const EditorPage = () =>{
+    const socketRef = useRef(null);
+    useEffect(() => {
+        const init = async () => {
+            socketRef.current = await initSocket();
+            socketRef.current.emit(ACTIONS.JOIN, {
+                roomId,
+                username: location.state?.username,
+            });
+        }
+        init();
+    },[]);
     const [clients, setClients] = useState([
         {socketId: 1, username: 'narendra'},
         {socketId: 2, username: 'Arjun'},
@@ -12,7 +27,7 @@ const EditorPage = () =>{
         <div className="aside">
             <div className="asideInner">
                 <div className="logo">
-                    <img src="" alt="logo" className="logoImage" />
+                    <img src="{LogoProject}" className="logoImage"  alt="logo"  />
                 </div>
                 <h3 className="">Connected</h3>
                 <div className="clientList">

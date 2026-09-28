@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {v4 as uuidV4} from 'uuid';
 import toast from 'react-hot-toast';
 import {useNavigate} from 'react-router-dom';
+import logoProject from '../components/LogoProject.png'
 
 const Home = () => {
     const navigate = useNavigate();
@@ -36,7 +37,7 @@ const Home = () => {
     return (
     <div className="homepageWrapper">
         <div className="formWrapper">
-            <img className="" src="homePageLogo" alt="code-sync-logo"/>
+            <img className="homePageLogo" src={logoProject} alt="makeyourcode-logo" />
             <h4 className="mainLabel">Paste Invitation ROOM ID</h4>
             <div className="inputGroup">
                 <input 
