@@ -3,6 +3,7 @@ import http from 'http'
 import { Server } from 'socket.io';
 import { validate as isUuid } from 'uuid';
 import ACTIONS from './src/Actions.js';
+import path from 'path';
 
 const app = express();
 const server = http.createServer(app);
@@ -12,6 +13,11 @@ const io = new Server(server, {
         methods: ["GET", "POST"]
     }
 });
+app.use(express.static('dist'));
+app.use((req, res, next) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+})
+
 
 const userSocketMap = {};
 const validRooms = new Set();
