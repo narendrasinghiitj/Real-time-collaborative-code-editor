@@ -84,7 +84,7 @@ footer a:hover {
   
 }
 .aside{
-  background: #15161d;
+  background: #a80404;
   padding: 16px;
   color: #fff;
   display: flex;
@@ -114,7 +114,8 @@ footer a:hover {
   padding-bottom: 10px;
 }
 .logoImage{
-  height: 60px;
+  height: 80px;
+  width: 200px;
 }
 .leaveBtn{
   margin-top: 20px;

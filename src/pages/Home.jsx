@@ -8,10 +8,12 @@ const Home = () => {
     const navigate = useNavigate();
     const [roomId,setRoomId] = useState('');
     const [username,setUsername] = useState('');
+    const [isNewRoom,setIsNewRoom] = useState(false);
     const createNewRoom = (e) =>{
         e.preventDefault();
         const id = uuidV4();
         setRoomId(id);
+        setIsNewRoom(true);
         toast.success('Created a new room')
     };
 
@@ -21,9 +23,10 @@ const Home = () => {
             return;
         }
 
-        navigate('/editor/${roomId}', {
+        navigate(`/editor/${roomId}`, {
             state: {
                 username,
+                isNewRoom,
             },
         })
     };
@@ -44,7 +47,7 @@ const Home = () => {
                     type="text"
                     className="inputBox"
                     placeholder="ROOM ID"
-                    onChange = {(e)=> setRoomId(e.target.value)}
+                    onChange = {(e)=> {setRoomId(e.target.value); setIsNewRoom(false); }}
                     value={roomId}
                     onKeyUp={handleInputEnter}
                 />
@@ -52,7 +55,7 @@ const Home = () => {
                     type="text"
                     className="inputBox"
                     placeholder="USERNAME"
-                    onChange = {(e)=> setUsername(e.target.value)}
+                    onChange={(e) => setUsername(e.target.value)}
                     value={username}
                     onKeyUp={handleInputEnter}
                 />

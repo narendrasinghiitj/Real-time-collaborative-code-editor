@@ -7,59 +7,48 @@ import 'codemirror/addon/edit/closetag.js'
 import 'codemirror/addon/edit/closebrackets.js'
 import ACTIONS from '../Actions'
 
-const Editor = ({socketRef, roomId}) => {
+const Editor = ({ socketRef, roomId }) => {
     const editorRef = useRef(null);
+
     useEffect(() => {
-        async function init(){
-            if(!editorRef.current){
-            editorRef.current = Codemirror.fromTextArea(
-                document.getElementById('realtimeEditor'), {
-                mode: {name: 'javascript', json: true },
+        const socket = socketRef.current;
+        const editor = Codemirror.fromTextArea(
+            document.getElementById('realtimeEditor'), {
+                mode: { name: 'javascript', json: true },
                 theme: 'liquibyte',
                 autoCloseTags: true,
                 autoCloseBrackets: true,
                 lineNumbers: true,
             });
-            }
+        editorRef.current = editor;
 
-            
-            editorRef.current.on('change', (instance, changes) => {
-                console.log('changes', changes);
-                const {origin} = changes;
-                const code = instance.getValue();
-                if(origin !== 'setValue'){
-                    socketRef.current.emit(ACTIONS.CODE_CHANGE, {
-                        roomId,
-                        code,
-                    })  
-                }
-                console.log(code);
-            })
-            // if(editorRef.current) {
-            //     editorRef.current.setValue('console.log');
-            // }
-            
-        }
-        init();
-        return () => {
-            if(editorRef.current){
-                editorRef.current.toTextArea();
-                editorRef.current = null;
+        // local typing -> send to others
+        editor.on('change', (instance, changes) => {
+            if (changes.origin !== 'setValue') {
+                socket.emit(ACTIONS.CODE_CHANGE, {
+                    roomId,
+                    code: instance.getValue(),
+                });
             }
-        }
+        });
+
+        // others' typing -> show here
+        const handleCodeChange = ({ code }) => {
+            if (code !== null && editor.getValue() !== code) {
+                const cursor = editor.getCursor();   // keep cursor from jumping
+                editor.setValue(code);
+                editor.setCursor(cursor);
+            }
+        };
+        socket.on(ACTIONS.CODE_CHANGE, handleCodeChange);
+
+        return () => {
+            socket.off(ACTIONS.CODE_CHANGE, handleCodeChange);
+            editor.toTextArea();
+            editorRef.current = null;
+        };
     }, []);
 
-    useEffect(() => {
-        if(socketRef.current){
-            socketRef.current.on(ACTIONS.CODE_CHANGE, ({code}) => {
-                if(code !== null){
-                    editorRef.current.setValue(code);
-                }
-            })
-        }
-
-    }, [socketRef.current]);
-    
     return <textarea id="realtimeEditor"></textarea>
 }
 
