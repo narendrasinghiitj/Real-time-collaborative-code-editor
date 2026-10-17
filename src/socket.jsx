@@ -7,5 +7,5 @@ export const initSocket = async () => {
         timeout: 10000,
         transports: ['websocket'],
     };
-    return io('http://onrender.com', options);
+    return io('https://onrender.com', options);
 }
