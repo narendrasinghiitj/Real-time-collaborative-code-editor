@@ -32,9 +32,11 @@ footer a {
   margin-bottom: 20px;
 }
 .homePageLogo{
-  height: 80px;
+  height: 150px;
+  width: 400px;
   margin-bottom: 30px;
-  padding-left: 78px;
+  border-radius: 5px;
+
 }
 .inputBox{
   padding: 10px;
@@ -126,4 +128,10 @@ footer a:hover {
   font-size: 20px;
   line-height: 1.6;
   padding-top: 20px;
+}
+@media (max-width: 720px) {
+  .mainWrap {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
 }

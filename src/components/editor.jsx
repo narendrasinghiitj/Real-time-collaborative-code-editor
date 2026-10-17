@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import Codemirror from 'codemirror'
 import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/liquibyte.css'
+import 'codemirror/theme/blackboard.css'
 import 'codemirror/mode/javascript/javascript.js'
 import 'codemirror/addon/edit/closetag.js'
 import 'codemirror/addon/edit/closebrackets.js'
@@ -15,7 +15,7 @@ const Editor = ({ socketRef, roomId }) => {
         const editor = Codemirror.fromTextArea(
             document.getElementById('realtimeEditor'), {
                 mode: { name: 'javascript', json: true },
-                theme: 'liquibyte',
+                theme: 'blackboard',
                 autoCloseTags: true,
                 autoCloseBrackets: true,
                 lineNumbers: true,
