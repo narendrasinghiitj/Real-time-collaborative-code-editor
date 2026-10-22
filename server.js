@@ -4,6 +4,7 @@ import { Server } from 'socket.io';
 import { validate as isUuid } from 'uuid';
 import ACTIONS from './src/Actions.js';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 const server = http.createServer(app);
@@ -13,6 +14,7 @@ const io = new Server(server, {
         methods: ["GET", "POST"]
     }
 });
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.static('dist'));
 app.use((req, res, next) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
@@ -87,4 +89,4 @@ io.on('connection', (socket) => {
 });
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, '0.0.0.0' () => console.log(`Listening on port ${PORT}`));
+server.listen(PORT, '0.0.0.0', () => console.log(`Listening on port ${PORT}`));
